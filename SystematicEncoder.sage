@@ -3,11 +3,11 @@ load("Helpers.sage")
 def define_standard_parameters():
     q = 256
     n = 255
-    F = GF(q, name="alpha")
-    alpha = F.gen()
-    R = PolynomialRing(F, "X")
-    X = R.gen()
-    x = vector(F, [alpha**(i-1) for i in range(1, n + 1)])
+    F = precomp["F"]
+    alpha = precomp["alpha"]
+    R = precomp["R"]
+    X = precomp["X"]
+    x = precomp["x"]
     return q, n, F, alpha, R, X, x
 
 def systematic_encoder(n, x, message, R):
@@ -50,6 +50,5 @@ if __name__ == "__main__":
     q, n, F, alpha, R, X, x = define_standard_parameters()
 
     message = vector(F, [1,1,1,0,0,0]) # The length cannot be longer than 255
-    k = len(message)
 
     print(f"The encoded version of the message {message} is: {systematic_encoder(n, x, message, R)}")
