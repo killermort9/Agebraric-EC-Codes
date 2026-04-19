@@ -90,15 +90,15 @@ if __name__ == "__main__":
     1 - estimate the error rate - modify the input parameters for the function as you like
     2 - Decode one codeword - write the codeword you would like to decode (using alpha as the field generator)
     '''
-    test_run = 2 # Either 1 or 2
+    test = 1 # Either 1 or 2
 
-    if test_run == 1:
+    if test == 1:
         estimate_error_rate(k=251, P=0.001, Iterations=100000)
-    elif test_run == 2:
+    elif test == 2:
         F, alpha, R, X, x, G, L = load_precomp_parameters()
 
         c = vector(F, [0 for i in range(255)])
 
         decoder(r=c, k=251, print_=True)
     else:
-        print("Invalid value of test_run")
+        print("Invalid value for test")
