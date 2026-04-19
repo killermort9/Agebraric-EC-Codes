@@ -1,5 +1,15 @@
 load("Helpers.sage")
 
+def define_standard_parameters():
+    q = 256
+    n = 255
+    F = GF(q, name="alpha")
+    alpha = F.gen()
+    R = PolynomialRing(F, "X")
+    X = R.gen()
+    x = vector(F, [alpha**(i-1) for i in range(1, n + 1)])
+    return q, n, F, alpha, R, X, x
+
 def systematic_encoder(n, x, message, R):
     '''
     Parameters
@@ -34,16 +44,12 @@ def very_systematic_generator_matrix(n, k, x, R):
     
     return systematic_encoder(n=n, x=x, message=message, R=R)
 if __name__ == "__main__":
-    q = 256
-    n = 255
-    F = GF(q, name="alpha")
-    alpha = F.gen()
-    R = PolynomialRing(F, "X")
-    X = R.gen()
+    '''
+    Modify the message to a lenth of less than 255 using "alpha" as the generator for the field. then run the script
+    '''
+    q, n, F, alpha, R, X, x = define_standard_parameters()
 
-    message = vector(F, [1,1,1,0,0,0])
-
+    message = vector(F, [1,1,1,0,0,0]) # The length cannot be longer than 255
     k = len(message)
-    x = vector(F, [alpha**(i-1) for i in range(1, n + 1)])
 
     print(f"The encoded version of the message {message} is: {systematic_encoder(n, x, message, R)}")

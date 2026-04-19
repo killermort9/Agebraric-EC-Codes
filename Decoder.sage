@@ -7,7 +7,7 @@ if "precomp" not in globals():
 
 
 
-def decoder(r, k):
+def decoder(r, k, print_=False):
     Rx = sum((y*Li for y, Li in zip(r, L)), R.zero())
 
     M = matrix(R, [[G, 0 ],[-Rx, 1 ]])
@@ -22,7 +22,22 @@ def decoder(r, k):
         c_guess = None
     else:
         c_guess = vector(F, [f_guess(xi) for xi in x])
+    
+    if print_:
+        print(f"The decoded polynomial is {f_guess} and the corresponding codeword is {c_guess}")
     return c_guess
+
+
+def load_precomp_parameters():
+    F = precomp["F"]
+    alpha = precomp["alpha"]
+    R = precomp["R"]
+    X = precomp["X"]
+    x = precomp["x"]
+    G = precomp["G"]
+    L = precomp["L"]
+    return F, alpha, R, X, x, G, L
+
 
 @parallel(ncpus=8)
 def test_run(k, c, P):
@@ -38,13 +53,7 @@ def test_run(k, c, P):
 
         
 def estimate_error_rate(k, P, Iterations):
-    F = precomp["F"]
-    alpha = precomp["alpha"]
-    R = precomp["R"]
-    X = precomp["X"]
-    x = precomp["x"]
-    G = precomp["G"]
-    L = precomp["L"]
+    F, alpha, R, X, x, G, L = load_precomp_parameters()
 
     f = X
     c = vector(F, [f(i) for i in x])
@@ -76,4 +85,20 @@ def estimate_error_rate(k, P, Iterations):
 
 
 if __name__ == "__main__":
-    estimate_error_rate(k=251, P=0.001, Iterations=100000)
+    '''
+    Choose which test run you want to do:
+    1 - estimate the error rate - modify the input parameters for the function as you like
+    2 - Decode one codeword - write the codeword you would like to decode (using alpha as the field generator)
+    '''
+    test_run = 2 # Either 1 or 2
+
+    if test_run == 1:
+        estimate_error_rate(k=251, P=0.001, Iterations=100000)
+    elif test_run == 2:
+        F, alpha, R, X, x, G, L = load_precomp_parameters()
+
+        c = vector(F, [0 for i in range(255)])
+
+        decoder(r=c, k=251, print_=True)
+    else:
+        print("Invalid value of test_run")
