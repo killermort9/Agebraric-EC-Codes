@@ -93,12 +93,12 @@ if __name__ == "__main__":
     test = 1 # Either 1 or 2
 
     if test == 1:
-        estimate_error_rate(k=251, P=0.001, Iterations=100000)
+        estimate_error_rate(k=245, P=0.007972, Iterations=100000)
     elif test == 2:
         F, alpha, R, X, x, G, L = load_precomp_parameters()
 
         c = vector(F, [0 for i in range(255)])
 
-        decoder(r=c, k=251, print_=True)
+        decoder(r=c, k=245, print_=True)
     else:
         print("Invalid value for test")
