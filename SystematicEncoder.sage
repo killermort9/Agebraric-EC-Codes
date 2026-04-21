@@ -1,4 +1,8 @@
 load("Helpers.sage")
+load("Precomputer.sage")
+
+if "precomp" not in globals():
+    precomp = load_precomp()
 
 def define_standard_parameters():
     q = 256

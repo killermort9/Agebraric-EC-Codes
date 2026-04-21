@@ -19,7 +19,7 @@ def lagrange_basis(x, R, k=None):
         Li = R(1)
         for j, xj in enumerate(x[:k]):
             if i != j:
-                Li *= (X - xj) / (xi - xj)
+                Li *= R((X - R(xj)) / (R(xi) - R(xj)))
         basis.append(Li)
     return basis
 
